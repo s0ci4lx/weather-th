@@ -98,7 +98,7 @@ const getWeatherByCoords = async (lat, lon) => {
     <label class="grid cursor-pointer p-4">
       <input
         type="checkbox"
-        value="forest"
+        value="autumn"
         class="toggle theme-controller bg-base-content col-span-2 col-start-1 row-start-1"
       />
       <svg
@@ -157,7 +157,7 @@ const getWeatherByCoords = async (lat, lon) => {
       </button>
     </div>
 
-    <button @click="getWeather" class="btn btn-primary mb-2 w-6/12 md:max-w-md">
+    <button @click="getWeather" class="btn btn-primary mb-2 w-full max-w-xs md:max-w-md lg:max-w-lg">
       ดึงข้อมูลสภาพอากาศ
     </button>
     <button
