@@ -136,7 +136,7 @@ const getWeatherByCoords = async (lat, lon) => {
 
   <div class="flex flex-col items-center min-h-screen bg-base-200 p-4">
     <h1 class="text-2xl md:text-3xl font-bold mb-5 text-center">
-      ข้อมูลสภาพอากาศเรียลไทม์ พร้อมแจ้งเตือนภัยพิบัติ
+      ข้อมูลสภาพอากาศเรียลไทม์
     </h1>
 
     <!-- Input with Reset button -->
