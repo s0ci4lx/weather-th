@@ -77,6 +77,7 @@ const getWeather = async () => {
   }
 };
 
+
 // ฟังก์ชันสำหรับดึงข้อมูลสภาพอากาศจากตำแหน่ง (พิกัด)
 const getWeatherByCoords = async (lat, lon) => {
   try {
@@ -85,11 +86,14 @@ const getWeatherByCoords = async (lat, lon) => {
     );
     // console.log(response.data); // ตรวจสอบข้อมูลที่ได้
     weather.value = response.data;
+    location.value = weather.value.name;
   } catch (error) {
     console.error("Error fetching weather data by coordinates:", error);
   }
 };
+
 </script>
+
 <template>
   <div class="flex items-end bg-secondary">
     <label class="grid cursor-pointer p-4">
@@ -134,15 +138,25 @@ const getWeatherByCoords = async (lat, lon) => {
 
   <div class="flex flex-col items-center min-h-screen bg-base-200 p-4">
     <h1 class="text-2xl md:text-3xl font-bold mb-5 text-center">
-      การแจ้งเตือนสภาพอากาศและภัยพิบัติ
+      ข้อมูลสภาพอากาศเรียลไทม์ พร้อมแจ้งเตือนภัยพิบัติ
     </h1>
 
-    <input
-      v-model="location"
-      placeholder="กรอกชื่อสถานที่ของคุณ"
-      @keyup.enter="getWeather"
-      class="input input-bordered w-full max-w-xs md:max-w-md lg:max-w-lg mb-4"
-    />
+    <!-- Input with Reset button -->
+    <div class="relative w-full max-w-xs md:max-w-md lg:max-w-lg mb-4">
+      <input
+        v-model="location"
+        placeholder="กรอกชื่อสถานที่ของคุณ"
+        @keyup.enter="getWeather"
+        class="input input-bordered w-full pr-12"
+      />
+      <!-- Reset button -->
+      <button
+        @click="location = ''"
+        class="absolute right-2 top-1/2 transform -translate-y-1/2 btn btn-outline btn-error btn-xs"
+      >
+        Reset
+      </button>
+    </div>
 
     <button @click="getWeather" class="btn btn-primary mb-2 w-full md:w-auto">
       ดึงข้อมูลสภาพอากาศ
@@ -171,7 +185,6 @@ const getWeatherByCoords = async (lat, lon) => {
         </p>
       </div>
     </div>
-    <div>{{ searchId }} , {{ caseId }}</div>
 
     <!-- Toast -->
     <div v-if="showToast" class="toast toast-top toast-center">

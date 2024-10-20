@@ -54,6 +54,8 @@ const getLocationPermission = () => {
 // ฟังก์ชันสำหรับดึงข้อมูลสภาพอากาศตามที่อยู่ที่ผู้ใช้กรอก
 const getWeather = async () => {
   if (!location.value) {
+    errorMsg.value =
+      "กรุณากรอกชื่อสถานที่! หรือกดปุ่ม ใช้ตำแหน่งปัจจุบันของคุณ";
     showToast.value = true;
     setTimeout(() => {
       showToast.value = false;
@@ -66,6 +68,12 @@ const getWeather = async () => {
     );
     weather.value = response.data;
   } catch (error) {
+    errorMsg.value = "ไม่พบข้อมูลของสถานที่นี้ กรุณาลองใหม่อีกครั้ง";
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+      router.push({ name: "home" });
+    }, 3000);
     console.error("Error fetching weather data:", error);
   }
 };
@@ -129,15 +137,25 @@ const getWeatherByCoords = async (lat, lon) => {
 
   <div class="flex flex-col items-center min-h-screen bg-base-200 p-4">
     <h1 class="text-2xl md:text-3xl font-bold mb-5 text-center">
-      การแจ้งเตือนสภาพอากาศและภัยพิบัติ
+      ข้อมูลสภาพอากาศเรียลไทม์ พร้อมแจ้งเตือนภัยพิบัติ
     </h1>
 
-    <input
-      v-model="location"
-      placeholder="กรอกชื่อสถานที่ของคุณ"
-      @keyup.enter="getWeather"
-      class="input input-bordered w-full max-w-xs md:max-w-md lg:max-w-lg mb-4"
-    />
+    <!-- Input with Reset button -->
+    <div class="relative w-full max-w-xs md:max-w-md lg:max-w-lg mb-4">
+      <input
+        v-model="location"
+        placeholder="กรอกชื่อสถานที่ของคุณ"
+        @keyup.enter="getWeather"
+        class="input input-bordered w-full pr-12"
+      />
+      <!-- Reset button -->
+      <button
+        @click="location = ''"
+        class="absolute right-2 top-1/2 transform -translate-y-1/2 btn btn-outline btn-error btn-xs"
+      >
+        Reset
+      </button>
+    </div>
 
     <button @click="getWeather" class="btn btn-primary mb-2 w-full md:w-auto">
       ดึงข้อมูลสภาพอากาศ
