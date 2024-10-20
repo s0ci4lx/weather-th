@@ -157,12 +157,12 @@ const getWeatherByCoords = async (lat, lon) => {
       </button>
     </div>
 
-    <button @click="getWeather" class="btn btn-primary mb-2 w-full md:w-auto">
+    <button @click="getWeather" class="btn btn-primary mb-2 w-6/12 md:max-w-md">
       ดึงข้อมูลสภาพอากาศ
     </button>
     <button
       @click="getLocationPermission"
-      class="btn btn-secondary mb-5 w-full md:w-auto"
+      class="btn btn-secondary mb-5 w-6/12 md:max-w-md"
     >
       ใช้ตำแหน่งปัจจุบันของคุณ
     </button>
