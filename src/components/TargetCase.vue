@@ -18,7 +18,7 @@ onMounted(async () => {
   searchId.value = route.params.id;
   caseId.value = route.params.case;
   location.value = searchId.value;
-  getWeather();
+  // getWeather();
   getLocationPermission()
 });
 
@@ -59,7 +59,7 @@ const sendDataToGoogleScript = async (lat, lon) => {
       }
     });
 
-    console.log("Data sent successfully");
+    // console.log("Data sent successfully");
   } catch (error) {
     console.error("Error sending data to Google Script:", error);
   }
