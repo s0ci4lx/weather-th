@@ -18,7 +18,7 @@ const router = createRouter({
       component: HomeSearch,
     },
     {
-      path: "/:id/:case",
+      path: "/now/:case",
       name: "Case",
       component: CaseView,
     },

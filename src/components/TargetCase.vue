@@ -10,15 +10,11 @@ const location = ref("");
 const weather = ref(null);
 const showToast = ref(false);
 const apiKey = "6cc90cf06271d59f71fb167ec35738f7";
-const searchId = ref("");
 const caseId = ref("");
 const errorMsg = ref("");
 /////////// ฟังชั่นการทำงานก่อนแสดงผลหน้าเว็บ ///////////////////
 onMounted(async () => {
-  searchId.value = route.params.id;
   caseId.value = route.params.case;
-  location.value = searchId.value;
-  // getWeather();
   getLocationPermission()
 });
 
