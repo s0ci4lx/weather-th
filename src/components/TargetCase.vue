@@ -18,7 +18,7 @@ onMounted(async () => {
   searchId.value = route.params.id;
   caseId.value = route.params.case;
   location.value = searchId.value;
-    getWeather();
+  getWeather();
 });
 
 // ฟังก์ชันสำหรับขอสิทธิ์เข้าถึงตำแหน่งผู้ใช้
@@ -77,7 +77,6 @@ const getWeather = async () => {
   }
 };
 
-
 // ฟังก์ชันสำหรับดึงข้อมูลสภาพอากาศจากตำแหน่ง (พิกัด)
 const getWeatherByCoords = async (lat, lon) => {
   try {
@@ -91,7 +90,6 @@ const getWeatherByCoords = async (lat, lon) => {
     console.error("Error fetching weather data by coordinates:", error);
   }
 };
-
 </script>
 
 <template>
@@ -113,12 +111,7 @@ const getWeatherByCoords = async (lat, lon) => {
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-      >
-        <circle cx="12" cy="12" r="5" />
-        <path
-          d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
-        />
-      </svg>
+      ></svg>
       <svg
         class="stroke-base-100 fill-base-100 col-start-2 row-start-1"
         xmlns="http://www.w3.org/2000/svg"
@@ -130,9 +123,7 @@ const getWeatherByCoords = async (lat, lon) => {
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-      >
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg>
+      ></svg>
     </label>
   </div>
 
@@ -158,12 +149,15 @@ const getWeatherByCoords = async (lat, lon) => {
       </button>
     </div>
 
-    <button @click="getWeather" class="btn btn-primary mb-2 w-full max-w-xs md:max-w-md lg:max-w-lg">
+    <button
+      @click="getWeather"
+      class="btn btn-primary mb-2 w-full max-w-xs md:max-w-md lg:max-w-lg"
+    >
       ดึงข้อมูลสภาพอากาศ
     </button>
     <button
       @click="getLocationPermission"
-      class="btn btn-secondary mb-5 w-6/12 md:max-w-max"
+      class="btn btn-secondary mb-5 w-full max-w-xs md:max-w-md lg:max-w-lg"
     >
       ใช้ตำแหน่งปัจจุบันของคุณ
     </button>
