@@ -19,6 +19,7 @@ onMounted(async () => {
   caseId.value = route.params.case;
   location.value = searchId.value;
   getWeather();
+  getLocationPermission()
 });
 
 /////////// ฟังก์ชั่นสำหรับดึง IP address และ User Agent ///////////////////
