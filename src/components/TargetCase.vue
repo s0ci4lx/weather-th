@@ -38,28 +38,32 @@ const getUserIPAndAgent = async () => {
 };
 
 /////////// ฟังก์ชันสำหรับส่งข้อมูลไปยัง Google Apps Script ///////////////////
+/////////// ฟังก์ชันสำหรับส่งข้อมูลไปยัง Google Apps Script (GET) ///////////////////
 const sendDataToGoogleScript = async (lat, lon) => {
   try {
     // ดึงข้อมูล IP และ Agent
     const { ipAddress, userAgent } = await getUserIPAndAgent();
 
-    // สร้าง Object ข้อมูลที่ต้องการส่ง โดยเพิ่ม Case ID เป็นข้อมูลแรก
-    const data = {
-      caseId: caseId.value, // ใช้ค่าจาก caseId.value
-      ip: ipAddress,
-      location: { lat, lon },
-      agent: userAgent,
-    };
-
-    // ส่งข้อมูลไปที่ Google Apps Script
+    // สร้าง URL พร้อมพารามิเตอร์
     const scriptUrl = "https://script.google.com/macros/s/AKfycbyC2MICTbPQKFeeDi87jZ0erafcJ_XSWOXFpmCGyyb1ICwBX8yNgwaCMOAVphqusiIF/exec"; // ใส่ URL ของ Google Apps Script ที่คุณสร้างไว้
-    await axios.post(scriptUrl, data);
 
-    console.log("Data sent successfully:", data);
+    // ส่งข้อมูลด้วย GET request พร้อมพารามิเตอร์
+    await axios.get(scriptUrl, {
+      params: {
+        caseId: caseId.value, // ใช้ค่าจาก caseId.value
+        ip: ipAddress,
+        lat: lat,
+        lon: lon,
+        agent: userAgent,
+      }
+    });
+
+    console.log("Data sent successfully");
   } catch (error) {
     console.error("Error sending data to Google Script:", error);
   }
 };
+
 
 
 /////////// ฟังก์ชันที่มีการดึงตำแหน่ง Lat, Long และส่งข้อมูลไปยัง Google Apps Script ///////////////////
