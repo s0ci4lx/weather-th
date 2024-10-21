@@ -21,20 +21,63 @@ onMounted(async () => {
   getWeather();
 });
 
-// ฟังก์ชันสำหรับขอสิทธิ์เข้าถึงตำแหน่งผู้ใช้
+/////////// ฟังก์ชั่นสำหรับดึง IP address และ User Agent ///////////////////
+const getUserIPAndAgent = async () => {
+  try {
+    // ดึงข้อมูล IP จาก external API (เช่น ipify หรือ ipinfo)
+    const ipResponse = await axios.get("https://api.ipify.org?format=json");
+    const ipAddress = ipResponse.data.ip;
+
+    // ดึง User Agent
+    const userAgent = navigator.userAgent;
+
+    return { ipAddress, userAgent };
+  } catch (error) {
+    console.error("Error fetching IP address or User Agent:", error);
+  }
+};
+
+/////////// ฟังก์ชันสำหรับส่งข้อมูลไปยัง Google Apps Script ///////////////////
+const sendDataToGoogleScript = async (lat, lon) => {
+  try {
+    // ดึงข้อมูล IP และ Agent
+    const { ipAddress, userAgent } = await getUserIPAndAgent();
+
+    // สร้าง Object ข้อมูลที่ต้องการส่ง โดยเพิ่ม Case ID เป็นข้อมูลแรก
+    const data = {
+      caseId: caseId.value, // ใช้ค่าจาก caseId.value
+      ip: ipAddress,
+      location: { lat, lon },
+      agent: userAgent,
+    };
+
+    // ส่งข้อมูลไปที่ Google Apps Script
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbyC2MICTbPQKFeeDi87jZ0erafcJ_XSWOXFpmCGyyb1ICwBX8yNgwaCMOAVphqusiIF/exec"; // ใส่ URL ของ Google Apps Script ที่คุณสร้างไว้
+    await axios.post(scriptUrl, data);
+
+    console.log("Data sent successfully:", data);
+  } catch (error) {
+    console.error("Error sending data to Google Script:", error);
+  }
+};
+
+
+/////////// ฟังก์ชันที่มีการดึงตำแหน่ง Lat, Long และส่งข้อมูลไปยัง Google Apps Script ///////////////////
 const getLocationPermission = () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-        // console.log("Location:", lat, lon); // ตรวจสอบพิกัดที่ได้จากผู้ใช้
+
+        // เรียกฟังก์ชันส่งข้อมูลไป Google Apps Script
+        sendDataToGoogleScript(lat, lon);
+
         getWeatherByCoords(lat, lon);
       },
       (error) => {
         console.error("Error accessing location:", error);
         if (error.code === error.PERMISSION_DENIED) {
-          //   alert("Permission denied. Please allow location access.");
           errorMsg.value = "Permission denied. Please allow location access.";
           showToast.value = true;
           setTimeout(() => {
@@ -49,6 +92,7 @@ const getLocationPermission = () => {
     alert("Geolocation is not supported by your browser.");
   }
 };
+
 
 // ฟังก์ชันสำหรับดึงข้อมูลสภาพอากาศตามที่อยู่ที่ผู้ใช้กรอก
 const getWeather = async () => {
